@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>img</title>
+    <style>
+        img {
+            height: 200px;
+            width: 500px;
+        }
+    </style>
+</head>
+<body>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="file" name="images" id="imageInput" multiple>
+        <input type="button" value="submit" id="submitButton">
+    </form>
+
+    <hr>
+    {% for img in images %}
+        <img src="{{ img.images.url }}" alt="upload">
+    {% endfor %}
+</body>
+<!-- Add your script here -->
+<script>
+    document.getElementById('submitButton').addEventListener('click', function() {
+        var input = document.getElementById('imageInput');
+        var files = input.files;
+
+        if (files.length > 0) {
+            var formData = new FormData();
+
+            for (var i = 0; i < files.length; i++) {
+                formData.append('images', files[i]);
+            }
+
+            fetch('', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}'
+                }
+            }).then(response => {
+                if (response.ok) {
+                    location.reload();
+                } else {
+                    console.error('Failed to submit form');
+                }
+            });
+        }
+    });
+</script>
+</html>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>img</title>
+    <style>
+        img{
+            height: 200px;
+            width: 500px;
+        }
+    </style>
+</head>
+<body>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="file" name="images" multiple>
+        <input type="button" value="submit">
+    </form>
+
+    <hr>
+    {% for img in images %}
+    <img src="{{img.images.url}}" alt="upload">
+    {% endfor %}
+</body>
+</html>
